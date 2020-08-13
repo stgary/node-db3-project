@@ -18,7 +18,7 @@ function findById(id) {
 }
 
 function findSteps(id) {
-    return db("steps").where({ id }).first();
+    return db("steps").where({ id });
 }
 
 function add(schemeData) {
@@ -33,7 +33,21 @@ function add(schemeData) {
     );
 }
 
-function update(id, changes) {
+function addStep(stepsData, scheme_id) {
+    const steps = {
+        ...steps,
+        scheme_id: scheme_id
+    }
+    return (
+        db("steps")
+            .insert(stepsData)
+            .then(() => {
+                return findSteps(scheme_id);
+            })
+    );
+}
+
+function update(changes, id) {
     return db("schemes")
         .where({ id })
         .update(changes)
